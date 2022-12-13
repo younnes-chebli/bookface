@@ -1,22 +1,10 @@
-//db
-import * as dotenv from "dotenv";
-dotenv.config();
-
-import mongoose from "mongoose";
-
-mongoose.set('strictQuery', false);
-
-const DB_CONNECT = process.env.DB_CONNECT;
-
-mongoose.connect(DB_CONNECT, {useNewUrlParser: true}, () => {
-    console.log("Connected to db!");
-});
-
-//server
+import dbConnect from "./database/config.mjs";
 import express from "express";
 
 const server = express();
 const PORT = 3000;
+
+dbConnect();
 
 server.use(express.json());
 
