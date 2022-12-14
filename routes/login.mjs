@@ -1,14 +1,7 @@
 import express from "express";
-import JWT from "jsonwebtoken";
-import { promisify } from "util";
 import getUserByEmail from "../database/queries/getUserByEmail.mjs";
 import bcrypt from "bcrypt";
-import * as dotenv from "dotenv";
-dotenv.config();
-
-const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
-const sign = promisify(JWT.sign);
-const verify = promisify(JWT.verify);
+import assignToken from "../utils/assignToken.mjs";
 
 const login = express.Router();
 
@@ -30,15 +23,9 @@ login.post("/login", async(req, res) => {
             return res.sendStatus(401);
         }
 
-        const token = await sign(
-            { id: user._id, email: user.email},
-                ACCESS_TOKEN,
-                {
-                    algorithm: "HS512",
-                    // expiresIn: "1h"
-                }
-        );
+        await assignToken(user);
 
+        // return res.redirect("profile");
         return res.status(200).send(token);
     } catch (err) {
         return res.sendStatus(500);

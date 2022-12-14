@@ -4,6 +4,7 @@ import signup from "./routes/signup.mjs";
 import login from "./routes/login.mjs";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
+import authenticateToken from "./middleware/authenticateToken.mjs";
 
 const server = express();
 const PORT = 3000;
@@ -28,6 +29,11 @@ server.get("/login", (req, res) => {
 
 server.get("/signup", (req, res) => {
     res.render("signup");
+});
+
+server.get("/profile", authenticateToken, (req, res) => {
+    const user = req.user;
+    res.render("profile", user);
 });
 
 server.use(signup);
