@@ -2,6 +2,7 @@ import dbConnect from "./database/config.mjs";
 import express from "express";
 import signup from "./routes/signup.mjs";
 import bodyParser from "body-parser";
+import mongoose from "mongoose";
 
 const server = express();
 const PORT = 3000;
@@ -22,6 +23,9 @@ server.get("/", (req, res) => {
 
 server.use(signup);
 
-server.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+mongoose.connection.once("open", () => {
+    console.log("Connected to MongoDB!");
+    server.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
 });

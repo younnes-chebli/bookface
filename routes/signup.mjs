@@ -1,7 +1,7 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import addUser from "../database/queries/addUser.mjs";
-import getUser from "../database/queries/getUser.mjs";
+import getUserByEmail from "../database/queries/getUserByEmail.mjs";
 
 const signup = new express.Router();
 
@@ -9,23 +9,24 @@ signup.post("/user", async(req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-        res.sendStatus(400);
+        return res.status(400).send("missing param");
     }
 
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const user = await getUser();
+        const user = await getUserByEmail(email);
 
-        if(!user) {
-            res.status()
+        if(user) {
+            return res.status(400).send("User already exists");
         }
 
-        await addUser(email, hashedPassword);
+        const newUser = await addUser(email, hashedPassword);
 
-        res.status(201).send(user);
+        return res.status(201).send(newUser);
     } catch(err) {
-        res.sendStatus(500);
+        console.log(err.message);
+        return res.sendStatus(500);
     }
 });
 
