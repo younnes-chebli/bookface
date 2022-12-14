@@ -1,6 +1,7 @@
 import dbConnect from "./database/config.mjs";
 import express from "express";
 import signup from "./routes/signup.mjs";
+import login from "./routes/login.mjs";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 
@@ -22,6 +23,8 @@ server.get("/", (req, res) => {
 });
 
 server.use(signup);
+
+server.use(login);
 
 mongoose.connection.once("open", () => {
     console.log("Connected to MongoDB!");

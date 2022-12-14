@@ -5,14 +5,14 @@ import getUserByEmail from "../database/queries/getUserByEmail.mjs";
 
 const signup = new express.Router();
 
-signup.post("/user", async(req, res) => {
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-        return res.status(400).send("missing param");
-    }
-
+signup.post("/signup", async(req, res) => {
     try {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(400).send("missing param");
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10);
 
         const user = await getUserByEmail(email);
@@ -25,7 +25,6 @@ signup.post("/user", async(req, res) => {
 
         return res.status(201).send(newUser);
     } catch(err) {
-        console.log(err.message);
         return res.sendStatus(500);
     }
 });
