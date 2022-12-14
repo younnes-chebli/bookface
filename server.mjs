@@ -31,9 +31,9 @@ server.get("/signup", (req, res) => {
     res.render("signup");
 });
 
-server.get("/profile", authenticateToken, (req, res) => {
-    const user = req.user;
-    res.render("profile", user);
+server.get("/profile/:username", (req, res) => {
+    const username = req.params.username;
+    res.render("profile", { username });
 });
 
 server.use(signup);

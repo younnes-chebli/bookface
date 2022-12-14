@@ -26,8 +26,8 @@ signup.post("/signup", async(req, res) => {
 
         await assignToken(newUser);
 
-        // return res.redirect("profile");
-        return res.status(201).send(newUser);
+        return res.redirect(`profile/${newUser.username}`);
+        // return res.status(201).send(newUser);
     } catch(err) {
         return res.sendStatus(500);
     }

@@ -23,10 +23,10 @@ login.post("/login", async(req, res) => {
             return res.sendStatus(401);
         }
 
-        await assignToken(user);
+        const token = await assignToken(user);
 
-        // return res.redirect("profile");
-        return res.status(200).send(token);
+        return res.redirect(`profile/${user.username}`);
+        // return res.status(200).send(token);
     } catch (err) {
         return res.sendStatus(500);
     }
