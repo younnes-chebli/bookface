@@ -22,6 +22,14 @@ server.get("/", (req, res) => {
     res.render("index");
 });
 
+server.get("/login", (req, res) => {
+    res.render("login");
+});
+
+server.get("/signup", (req, res) => {
+    res.render("signup");
+});
+
 server.use(signup);
 
 server.use(login);
