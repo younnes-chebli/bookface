@@ -23,15 +23,11 @@ server.get("/", (req, res) => {
     res.render("index");
 });
 
-server.get("/login", (req, res) => {
-    res.render("login");
-});
-
 server.get("/signup", (req, res) => {
     res.render("signup");
 });
 
-server.get("/profile/:username", (req, res) => {
+server.get("/profile/:username", authenticateToken, (req, res) => {
     const username = req.params.username;
     res.render("profile", { username });
 });

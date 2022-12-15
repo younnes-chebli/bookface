@@ -24,6 +24,7 @@ login.post("/login", async(req, res) => {
         }
 
         const token = await assignToken(user);
+        
 
         return res.redirect(`profile/${user.username}`);
         // return res.status(200).send(token);
