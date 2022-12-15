@@ -2,7 +2,6 @@ import express from "express";
 import bcrypt from "bcrypt";
 import addUser from "../database/queries/addUser.mjs";
 import getUserByEmail from "../database/queries/getUserByEmail.mjs";
-import assignToken from "../utils/assignToken.mjs";
 
 const signup = new express.Router();
 
@@ -24,12 +23,12 @@ signup.post("/signup", async(req, res) => {
 
         const newUser = await addUser(email, username, hashedPassword);
 
-        await assignToken(newUser);
-
-        return res.redirect(`profile/${newUser.username}`);
+        return res.redirect("/login");
         // return res.status(201).send(newUser);
     } catch(err) {
-        return res.sendStatus(500);
+        console.log(err.message);
+        return res.redirect("/signup");
+        // return res.sendStatus(500);
     }
 });
 

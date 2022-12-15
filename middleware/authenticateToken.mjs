@@ -8,15 +8,15 @@ const verify = promisify(JWT.verify);
 
 const authenticateToken = async(req, res, next) => {
     try {
-        if(!req.headers.authorization) {
+        const cookie = req.cookies.accesstoken;
+        if(!cookie) {
             return res.sendStatus(401);
         }
 
-        const decoded = await verify(req.headers.authorization.split(" ")[1], ACCESS_TOKEN);
+        const decoded = await verify(cookie, ACCESS_TOKEN);
         
         if(decoded) {
             req.user = decoded;
-            console.log(req.user);
             return next();
         }
     } catch (err) {

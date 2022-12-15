@@ -1,7 +1,14 @@
 import express from "express";
 import getUserByEmail from "../database/queries/getUserByEmail.mjs";
 import bcrypt from "bcrypt";
-import assignToken from "../utils/assignToken.mjs";
+import JWT from "jsonwebtoken";
+import { promisify } from "util";
+import * as dotenv from "dotenv";
+dotenv.config();
+
+const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
+const sign = promisify(JWT.sign);
+const verify = promisify(JWT.verify);
 
 const login = express.Router();
 
@@ -23,15 +30,23 @@ login.post("/login", async(req, res) => {
             return res.sendStatus(401);
         }
 
-        const token = await assignToken(user);
-        
+        const token = await sign(
+            { id: user._id, email: user.email, username: user.username},
+                ACCESS_TOKEN,
+                {
+                    algorithm: "HS512",
+                    expiresIn: "1h"
+                }
+        );
 
-        return res.redirect(`profile/${user.username}`);
+        res.cookie('accesstoken', token, { httpOnly: true });
+        
+        return res.redirect("/profile");
         // return res.status(200).send(token);
     } catch (err) {
+        console.log(err.message);
         return res.sendStatus(500);
     }
 });
 
 export default login;
-
