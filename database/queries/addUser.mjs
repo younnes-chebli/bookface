@@ -1,4 +1,4 @@
-import User from "../schemas/User.mjs";
+import User from "../../model/User.mjs";
 
 const addUser = async(email, username, password) => {
     const user = new User({email: email, username: username, password: password});

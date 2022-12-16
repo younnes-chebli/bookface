@@ -5,12 +5,21 @@ const userSchema = new Schema({
     email: {
         type: String,
         required: true, 
-        lowercase: true
+        lowercase: true,
+        unique: true,
     },
-    username: String,
+    username: {
+        type: String,
+        required: true,
+        unique: true
+    },
     password: {
         type: String,
         required: true
+    },
+    profile: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "Profile",
     }
 });
 

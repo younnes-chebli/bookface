@@ -1,8 +1,12 @@
-import User from "../schemas/User.mjs"
+import User from "../../model/User.mjs";
 
 const getUserByEmail = async(email) => {
-    const user =  await User.findOne({email: email});
-    return user;
+    try {
+        const user =  await User.findOne({email: email});
+        return user;    
+    } catch (error) {
+        throw error;
+    }
 };
 
 export default getUserByEmail;
