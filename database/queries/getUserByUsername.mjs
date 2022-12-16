@@ -1,8 +1,8 @@
 import User from "../../model/User.mjs";
 
-const getUserByEmail = async(email) => {
+const getUserByUsername = async(username) => {
     try {
-        const user =  await User.findOne({email: email}).exec();
+        const user =  await User.findOne({username: username}).exec();
         return user;    
     } catch (error) {
         console.log(error.message);
@@ -10,4 +10,4 @@ const getUserByEmail = async(email) => {
     }
 };
 
-export default getUserByEmail;
+export default getUserByUsername;

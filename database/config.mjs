@@ -12,6 +12,7 @@ const dbConnect = () => {
             useUnifiedTopology: true
         });
     } catch(err) {
+        console.log(err.message);
         throw err;
     }    
 };

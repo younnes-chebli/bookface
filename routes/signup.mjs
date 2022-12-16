@@ -2,6 +2,7 @@ import express from "express";
 import bcrypt from "bcrypt";
 import addUser from "../database/queries/addUser.mjs";
 import getUserByEmail from "../database/queries/getUserByEmail.mjs";
+import getUserByUsername from "../database/queries/getUserByUsername.mjs";
 
 const signup = new express.Router();
 
@@ -15,13 +16,15 @@ signup.post("/signup", async(req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const user = await getUserByEmail(email);
-
-        if(user) {
-            return res.status(400).send("User already exists");
+        if(await getUserByEmail(email)) {
+            return res.status(400).send("Email already exists");
         }
 
-        const newUser = await addUser(email, username, hashedPassword);
+        if(await getUserByUsername(username)) {
+            return res.status(400).send("Username already exists");
+        }
+
+        await addUser(email, username, hashedPassword);
 
         return res.redirect("/login");
         // return res.status(201).send(newUser);

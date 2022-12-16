@@ -8,7 +8,6 @@ dotenv.config();
 
 const ACCESS_TOKEN = process.env.ACCESS_TOKEN;
 const sign = promisify(JWT.sign);
-const verify = promisify(JWT.verify);
 
 const login = express.Router();
 
@@ -19,9 +18,9 @@ login.post("/login", async(req, res) => {
         if(!email || !password) {
             return res.status(400).send("Missing param");
         }
-    
+
         const user = await getUserByEmail(email);
-    
+        
         if(!user) {
             return res.status(400).send("User doesn't exist");
         }
@@ -41,7 +40,7 @@ login.post("/login", async(req, res) => {
 
         res.cookie('accesstoken', token, { httpOnly: true });
         
-        return res.redirect("/profile");
+        return res.redirect(`/profile/${user.username}`);
         // return res.status(200).send(token);
     } catch (err) {
         console.log(err.message);

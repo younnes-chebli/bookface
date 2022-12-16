@@ -20,6 +20,7 @@ const authenticateToken = async(req, res, next) => {
             return next();
         }
     } catch (err) {
+        console.log(err.message);
         throw err;
     }
 };
